@@ -4,5 +4,18 @@
 			"service": "S3AndCloudFront",
 			"providerPlugin": "awscloudformation"
 		}
+	},
+	"auth": {
+		"cognito02da9c80": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"interactions": {
+		"chatbotchucklex": {
+			"service": "Lex",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		}
 	}
 }
