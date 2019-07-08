@@ -46,3 +46,22 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+### AWS Amplify Backend 
+
+TODO: update readme with amplify info
+
+**Note: `amplify/team-provider-info.json` was added to gitignore since I'm making this project open source, however, this would be useful for sharing within a team in a closed source control environment so the team can use the same cloudformation setup. For more info see: https://aws-amplify.github.io/docs/cli/multienv#sharing-a-project-within-a-team
+
+
+output from `amplify init` one time command:
+```
+Some next steps:
+"amplify status" will show you what you've added already and if it's locally configured or deployed
+"amplify <category> add" will allow you to add features like user login or a backend API
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+Pro tip:
+Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything
+```
+
