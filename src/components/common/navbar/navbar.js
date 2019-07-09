@@ -9,6 +9,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import Amplify from 'aws-amplify';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -36,7 +38,9 @@ export default function NavBar() {
   }
 
   function handleLogOut() {
-      //Do the auth stuff here with Amplify Logout 
+    Amplify.Auth.signOut({ global: true })
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
   }
 
   return (
