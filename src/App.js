@@ -1,16 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/common/navbar/navbar.js'
+
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { withAuthenticator } from 'aws-amplify-react'; 
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 
 function App() {
   return (
-    <div className="App">
+    <React.Fragment>
+    <CssBaseline />
+    {
+      <div className="App">
+      <NavBar />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -26,6 +33,9 @@ function App() {
         </a>
       </header>
     </div>
+    }
+  </React.Fragment>
+
   );
 }
 
