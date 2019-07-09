@@ -30,4 +30,22 @@ function App() {
 }
 
 
-export default withAuthenticator(App);
+const signUpConfig = {
+  header: 'Sign Up',
+  hideAllDefaults: false,
+  defaultCountryCode: '1',
+  signUpFields: [
+    {
+      label: 'Name',
+      key: 'name',
+      required: true,
+      displayOrder: 4,
+      type: 'string',
+      custom: false
+    }
+  ]
+};
+
+
+
+export default withAuthenticator(App, {signUpConfig});
