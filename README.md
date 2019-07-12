@@ -64,4 +64,6 @@ Some next steps:
 Pro tip:
 Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything
 ```
+### Current Environment
 
+`https://chatbot-chuck-20190708153945-hostingbucket-chatenv.s3-website-us-east-1.amazonaws.com/`
