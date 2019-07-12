@@ -30,11 +30,13 @@ const signUpConfig = {
 
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false)
+  let [currentUserName, setCurrentUserName] = useState("Who are you?")
   
   const authenticationStateChange = (authState) => {
     console.log("Processing auth state: "+authState)
     if(authState === "signedIn") { //successful sign in
       setIsLoggedIn(true)
+      Amplify.Auth.currentAuthenticatedUser().then((userInfo)=>{setCurrentUserName(userInfo.attributes.name)})
     } else if(authState === "signIn") { //prompt for username password
       setIsLoggedIn(false)
     } else if(authState === "signOut") { //signed out
@@ -49,7 +51,7 @@ function App() {
     <CssBaseline />
     {
       <div className="App">
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar isLoggedIn={isLoggedIn} userName={currentUserName} />
 
     {!isLoggedIn ? (
     <Authenticator
