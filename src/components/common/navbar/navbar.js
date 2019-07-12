@@ -1,5 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+import { withStyles } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,62 +13,74 @@ import Menu from '@material-ui/core/Menu';
 
 import Amplify from 'aws-amplify';
 
-const useStyles = makeStyles(theme => ({
+const styles = {
   root: {
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: "10px",
   },
   title: {
     flexGrow: 1,
+    height: 48
   },
-}));
+};
 
-export default function NavBar() {
-  const classes = useStyles();
-  const [auth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+class NavBar extends React.Component {
 
-  function openMenu(event) {
-    setAnchorEl(event.currentTarget);
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuAnchorEl: null
+    };
+
   }
 
-  function handleMenuClose() {
-    setAnchorEl(null);
+  openMenu = (clickEvent) => {
+    this.setState({
+      menuAnchorEl: clickEvent.target
+    })
   }
 
-  function handleLogOut() {
+  closeMenu = () => {
+    this.setState({
+      menuAnchorEl: null
+    })
+  }
+
+  handleLogOut() {
     Amplify.Auth.signOut({ global: true })
     .then(data => console.log(data))
     .catch(err => console.log(err));
   }
 
-  return (
-    <div className={classes.root}>
+  render() {
+
+  
+    return (
+    <div className={this.props.classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton edge="start" className={this.props.classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={this.props.classes.title}>
             Chatbot Chuck
           </Typography>
-          {auth && (
+          {this.props.isLoggedIn ? (
             <div>
               <IconButton
                 aria-label="Account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={openMenu}
+                onClick={this.openMenu}
                 color="inherit"
               >
                 <AccountCircle />
               </IconButton>
               <Menu
                 id="menu-appbar"
-                anchorEl={anchorEl}
+                anchorEl={this.state.menuAnchorEl}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
@@ -76,15 +90,24 @@ export default function NavBar() {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={open}
-                onClose={handleMenuClose}
+                open={Boolean(this.state.menuAnchorEl)}
+                onClose={this.closeMenu}
               >
-                <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                <MenuItem onClick={this.handleLogOut}>Logout</MenuItem>
               </Menu>
             </div>
+          ) : (
+            <div></div>
           )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+}
+
+NavBar.propTypes = {
+  isLoggedIn: PropTypes.bool
+}
+
+export default withStyles(styles)(NavBar);

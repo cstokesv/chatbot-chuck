@@ -1,44 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import NavBar from './components/common/navbar/navbar.js'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { withAuthenticator } from 'aws-amplify-react'; 
+import { Authenticator, Greetings } from 'aws-amplify-react'; 
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
-
-
-function App() {
-  return (
-    <React.Fragment>
-    <CssBaseline />
-    {
-      <div className="App">
-      <NavBar />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-    }
-  </React.Fragment>
-
-  );
-}
-
 
 const signUpConfig = {
   header: 'Sign Up',
@@ -58,4 +28,65 @@ const signUpConfig = {
 
 
 
-export default withAuthenticator(App, {signUpConfig});
+function App() {
+  let [isLoggedIn, setIsLoggedIn] = useState(false)
+  
+  const authenticationStateChange = (authState) => {
+    console.log("Processing auth state: "+authState)
+    if(authState === "signedIn") { //successful sign in
+      setIsLoggedIn(true)
+    } else if(authState === "signIn") { //prompt for username password
+      setIsLoggedIn(false)
+    } else if(authState === "signOut") { //signed out
+      setIsLoggedIn(false)
+    } else {
+      console.error("Authentication state not yet implemented for: "+authState)
+    }
+  }
+
+  return (
+    <React.Fragment>
+    <CssBaseline />
+    {
+      <div className="App">
+      <NavBar isLoggedIn={isLoggedIn} />
+
+    {!isLoggedIn ? (
+    <Authenticator
+      onStateChange={authenticationStateChange}  
+      signUpConfig={signUpConfig}
+      hide={ 
+        [
+          Greetings
+        ]
+      }
+    />
+    ) : (
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    )}
+  </div>
+    }
+  </React.Fragment>
+
+  );
+}
+
+
+
+
+
+
+export default App;
